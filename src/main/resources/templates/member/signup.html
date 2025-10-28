@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}"
+      th:fragment="content">
+<head>
+    <title>회원가입</title>
+
+    <th:block layout:fragment="css">
+        <style>
+            .material-symbols-outlined {
+                font-size: 24px;
+                color: #333;
+            }
+            .form-label {
+                font-size: 0.8rem;
+            }
+            .signup-card {
+                margin: 30px auto 100px;
+                padding: 50px 30px;
+                box-shadow: 0 6px 28px rgba(0,0,0, .1);
+                width: 674px;
+                border-radius: 16px;
+            }
+            .card-header {
+                display: flex;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+            }
+            .form-wrapper {
+                padding-bottom: 50px;
+            }
+            .email-wrapper {
+                display: flex;
+                flex: 1 1 auto;
+                width: 100%;
+            }
+            .email-wrapper .btn {
+                border-radius: .375rem !important;
+            }
+            .email-wrapper .form-control {
+                border-radius: .375rem !important;
+            }
+            .email-input-wrapper { /* 입력 부분은 넓게 */
+                flex: 1 1 auto;
+            }
+            .card-back-button {
+                display: flex;
+                position: absolute;
+                left: 0;
+                align-items: center;
+                text-decoration: none;
+            }
+            .card-title {
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.4rem;
+                margin: 20px 0;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="contents">
+            <div class="signup-card">
+                <div class="card-header">
+                    <a href="/login" class="card-back-button">
+                        <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                    </a>
+                    <h1 class="card-logo">
+                        <span class="card-logo-text">fanverse account</span>
+                    </h1>
+                </div>
+                <div class="card-content-wrapper">
+                    <h2 class="card-title">회원가입</h2>
+                    <div class="card-content">
+                        <div class="form-wrapper">
+                            <div class="email-wrapper">
+                                <div class="email-input-wrapper mb-3">
+                                    <label for="email" class="form-label">이메일</label>
+                                    <div class="input-group" style="gap: 8px">
+                                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                                        <button type="button" class="btn btn-light">인증코드 받기</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pw-wrapper">
+                                <div class="pw-input-wrapper mb-3">
+                                    <label for="비밀번호" class="form-label">비밀번호</label>
+                                    <input type="email" class="form-control" id="비밀번호" placeholder="비밀번호 입력">
+                                </div>
+                                <div>
+                                    <p class="guide-text">영문, 숫자, 특수문자 포함 8-32자</p>
+                                </div>
+                            </div>
+                            <div class="pw-check-wrapper">
+                                <div class="pw-check-input-wrapper mb-3">
+                                    <label for="비밀번호 확인" class="form-label">비밀번호 확인</label>
+                                    <input type="email" class="form-control" id="비밀번호 확인" placeholder="비밀번호 입력">
+                                </div>
+                            </div>
+                            <div class="name-wrapper">
+                                <div class="name-input-wrapper mb-3">
+                                    <label for="이름" class="form-label">이름</label>
+                                    <input type="email" class="form-control" id="이름" placeholder="이름">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-bottom">
+                    <div class="button-area d-grid gap-2">
+                        <button type="button" class="btn btn-light btn-lg">회원가입</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+    </script>
+</th:block>
+</html>
