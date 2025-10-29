@@ -15,6 +15,7 @@
             }
             .form-label {
                 font-size: 0.8rem;
+                font-weight: lighter;
             }
             .signup-card {
                 margin: 30px auto 100px;
@@ -59,6 +60,12 @@
                 font-size: 1.4rem;
                 margin: 20px 0;
             }
+            .guide-text {
+                font-size: 0.7rem;
+                font-weight: lighter;
+                color: #8e8e8e;
+                padding-top: 7px;
+            }
         </style>
     </th:block>
 </head>
@@ -76,57 +83,85 @@
                         <span class="card-logo-text">fanverse account</span>
                     </h1>
                 </div>
-                <div class="card-content-wrapper">
-                    <h2 class="card-title">회원가입</h2>
-                    <div class="card-content">
-                        <div class="form-wrapper">
-                            <div class="email-wrapper">
-                                <div class="email-input-wrapper mb-3">
-                                    <label for="email" class="form-label">이메일</label>
-                                    <div class="input-group" style="gap: 8px">
-                                        <input type="email" class="form-control" id="email" placeholder="name@example.com">
-                                        <button type="button" class="btn btn-light">인증코드 받기</button>
+
+                <form th:action="@{/signup}" th:object="${member}" method="post" id="signupForm">
+                    <div class="card-content-wrapper">
+                        <h2 class="card-title">회원가입</h2>
+                        <div class="card-content">
+                            <div class="form-wrapper">
+                                <div class="email-wrapper">
+                                    <div class="email-input-wrapper mb-3">
+                                        <label for="email" class="form-label">이메일</label>
+                                        <div class="input-group" style="gap: 8px">
+                                            <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="name@example.com" required>
+                                            <button type="button" class="btn btn-light">인증코드 받기</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="pw-wrapper">
-                                <div class="pw-input-wrapper mb-3">
-                                    <label for="비밀번호" class="form-label">비밀번호</label>
-                                    <input type="email" class="form-control" id="비밀번호" placeholder="비밀번호 입력">
+                                <div class="pw-wrapper">
+                                    <div class="pw-input-wrapper">
+                                        <label for="password" class="form-label">비밀번호</label>
+                                        <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="비밀번호 입력" required minlength="8">
+                                    </div>
+                                    <div>
+                                        <p class="guide-text">영문, 숫자, 특수문자 포함 8-32자</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p class="guide-text">영문, 숫자, 특수문자 포함 8-32자</p>
+                                <div class="pw-check-wrapper">
+                                    <div class="pw-check-input-wrapper mb-3">
+                                        <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+                                        <input type="password" class="form-control" id="passwordConfirm" placeholder="비밀번호 입력" required>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="pw-check-wrapper">
-                                <div class="pw-check-input-wrapper mb-3">
-                                    <label for="비밀번호 확인" class="form-label">비밀번호 확인</label>
-                                    <input type="email" class="form-control" id="비밀번호 확인" placeholder="비밀번호 입력">
-                                </div>
-                            </div>
-                            <div class="name-wrapper">
-                                <div class="name-input-wrapper mb-3">
-                                    <label for="이름" class="form-label">이름</label>
-                                    <input type="email" class="form-control" id="이름" placeholder="이름">
+                                <div class="name-wrapper">
+                                    <div class="name-input-wrapper mb-3">
+                                        <label for="name" class="form-label">이름</label>
+                                        <input type="text" th:field="*{name}" class="form-control" id="name" placeholder="이름" required>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="card-bottom">
-                    <div class="button-area d-grid gap-2">
-                        <button type="button" class="btn btn-light btn-lg">회원가입</button>
+                    <div class="card-bottom">
+                        <div class="button-area d-grid gap-2">
+                            <button type="submit" class="btn btn-light btn-lg" id="submitBtn" disabled>회원가입</button>
+                        </div>
                     </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>
-</section>
-</body>
 
-<th:block layout:fragment="script">
     <script th:inline="javascript">
 
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('signupForm');
+            const password = document.getElementById('password');
+            const passwordConfirm = document.getElementById('passwordConfirm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            function updateSubmitBtn() {
+                // 비밀번호 불일치 검사
+                passwordConfirm.setCustomValidity(
+                    password.value === passwordConfirm.value ? '' : '비밀번호가 일치하지 않습니다.'
+                );
+
+                // 유효성 검사 결과 반영
+                submitBtn.disabled = !form.checkValidity();
+            }
+
+
+
+
+        })
+
+
+
+        form.addEventListener('input', function () {
+            submitBtn.disabled = !form.checkValidity();
+        });
     </script>
-</th:block>
+</section>
+</body>
 </html>

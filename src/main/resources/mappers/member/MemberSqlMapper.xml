@@ -7,7 +7,7 @@
     <insert id="insertMember"
             useGeneratedKeys="true"
             keyProperty="id">
-        INSERT INTO users
+        INSERT INTO member
             (name, email, password, provider, role, created_at, updated_at)
         VALUES
             (#{name},
