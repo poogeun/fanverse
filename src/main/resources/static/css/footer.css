@@ -1,0 +1,13 @@
+.footer-container {
+  border-top: 1px solid #F5F5F5;
+  padding-top: 50px;
+}
+.footer-content {
+  color: rgb(142, 142, 142);
+  font-size: 12px;
+  line-height: 16px;
+}
+.text-wrap {
+  display: flex;
+  justify-content: center;
+}

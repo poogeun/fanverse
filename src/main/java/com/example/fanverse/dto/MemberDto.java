@@ -1,14 +1,19 @@
 package com.example.fanverse.dto;
 
+import com.example.fanverse.entity.Member;
 import com.example.fanverse.enums.Provider;
 import com.example.fanverse.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MemberDto {
 
   private Long id;
@@ -30,4 +35,16 @@ public class MemberDto {
   private LocalDateTime createdAt;
 
   private LocalDateTime updatedAt;
+
+  public static MemberDto from(Member member) {
+    return new MemberDto(
+            member.getId(),
+            member.getName(),
+            member.getEmail(),
+            member.getPassword(),
+            member.getProvider(),
+            member.getRole(),
+            member.getCreatedAt(),
+            member.getUpdatedAt());
+  }
 }

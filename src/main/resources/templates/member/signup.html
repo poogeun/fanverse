@@ -2,12 +2,12 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layout}"
-      th:fragment="content">
-<head>
-    <title>회원가입</title>
+      layout:decorate="~{common/layout}">
 
-    <th:block layout:fragment="css">
+<head>
+    <title layout:fragment="title">회원가입</title>
+
+    <th:block layout:fragment="head-extra">
         <style>
             .material-symbols-outlined {
                 font-size: 24px;
@@ -29,6 +29,10 @@
                 position: relative;
                 justify-content: center;
                 align-items: center;
+            }
+            .logo {
+                font-family: "DynaPuff", system-ui;
+                font-weight: 800;
             }
             .form-wrapper {
                 padding-bottom: 50px;
@@ -71,7 +75,7 @@
 </head>
 
 <body>
-<section layout:fragment="content">
+<main layout:fragment="content">
     <div class="container">
         <div class="contents">
             <div class="signup-card">
@@ -80,7 +84,10 @@
                         <span class="material-symbols-outlined">arrow_back_ios_new</span>
                     </a>
                     <h1 class="card-logo">
-                        <span class="card-logo-text">fanverse account</span>
+                        <div>
+                            <span class="logo">fanverse</span>
+                            <span class="card-logo-text">account</span>
+                        </div>
                     </h1>
                 </div>
 
@@ -151,17 +158,12 @@
                 submitBtn.disabled = !form.checkValidity();
             }
 
-
-
+            // 입력 시 유효성 검사 실행
+            form.addEventListener('input', updateSubmitBtn);
 
         })
 
-
-
-        form.addEventListener('input', function () {
-            submitBtn.disabled = !form.checkValidity();
-        });
     </script>
-</section>
+</main>
 </body>
 </html>

@@ -18,4 +18,12 @@
              now(),
              now())
     </insert>
+
+    <select id="findByEmail"
+            parameterType="string"
+            resultType="com.example.fanverse.entity.Member">
+        SELECT name, email, password, role
+        FROM member
+        WHERE email = #{email}
+    </select>
 </mapper>

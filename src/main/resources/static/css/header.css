@@ -1,0 +1,30 @@
+button {
+  all: unset;
+  cursor: pointer;
+}
+.header-wrap {
+  display: flex;
+  margin: 10px 10px;
+  border-bottom: 1px solid #F5F5F5;
+  justify-content: space-between;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+}
+.menu {
+  margin-right: 20px;
+}
+.logo-text {
+  all: unset;
+  cursor: pointer;
+}
+.logo-font {
+  font-family: "DynaPuff", system-ui;
+  font-weight: 700;
+}

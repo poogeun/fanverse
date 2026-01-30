@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}"
+      th:fragment="content">
+<head>
+    <title>회원가입</title>
+
+    <th:block layout:fragment="css">
+        <style>
+            .material-symbols-outlined {
+                font-size: 24px;
+                color: #333;
+            }
+            .form-label {
+                font-size: 0.8rem;
+                font-weight: lighter;
+            }
+            .signup-card {
+                margin: 30px auto 100px;
+                padding: 50px 30px;
+                box-shadow: 0 6px 28px rgba(0,0,0, .1);
+                width: 674px;
+                border-radius: 16px;
+            }
+            .card-header {
+                display: flex;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+            }
+            .logo {
+                font-family: "DynaPuff", system-ui;
+                font-weight: 800;
+            }
+            .form-wrapper {
+                padding-bottom: 50px;
+            }
+            .email-wrapper {
+                display: flex;
+                flex: 1 1 auto;
+                width: 100%;
+            }
+            .email-wrapper .btn {
+                border-radius: .375rem !important;
+            }
+            .email-wrapper .form-control {
+                border-radius: .375rem !important;
+            }
+            .email-input-wrapper { /* 입력 부분은 넓게 */
+                flex: 1 1 auto;
+            }
+            .card-back-button {
+                display: flex;
+                position: absolute;
+                left: 0;
+                align-items: center;
+                text-decoration: none;
+            }
+            .card-title {
+                text-align: center;
+                font-weight: bold;
+                font-size: 1.4rem;
+                margin: 20px 0;
+            }
+            .guide-text {
+                font-size: 0.7rem;
+                font-weight: lighter;
+                color: #8e8e8e;
+                padding-top: 7px;
+            }
+
+            .pw-wrapper {
+                margin-top: 20px;
+            }
+            .signup-wrapper {
+                display: flex;
+                justify-content: center;
+                margin-top: 40px;
+                font-size: 0.8rem;
+                color: #8e8e8e;
+            }
+            .signup-button {
+                color: black;
+            }
+        </style>
+    </th:block>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="contents">
+            <div class="signup-card">
+                <div class="card-header">
+                    <a href="/login" class="card-back-button">
+                        <span class="material-symbols-outlined">arrow_back_ios_new</span>
+                    </a>
+                    <h1 class="card-logo">
+                        <div>
+                            <span class="logo">fanverse</span>
+                            <span class="card-logo-text">account</span>
+                        </div>
+                    </h1>
+                </div>
+
+                <form th:action="@{/login}" th:object="${member}" method="post" id="loginForm">
+                    <div class="card-content-wrapper">
+                        <h2 class="card-title">로그인</h2>
+                        <div class="card-content">
+                            <div class="form-wrapper">
+                                <div class="email-wrapper">
+                                    <div class="email-input-wrapper">
+                                        <input type="email" th:field="*{email}" class="form-control form-control-lg" id="email" placeholder="your@email.com" required>
+                                    </div>
+                                </div>
+                                <div class="pw-wrapper">
+                                    <div class="pw-input-wrapper mb-3">
+                                        <input type="password" class="form-control form-control-lg" id="password" placeholder="비밀번호" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-bottom">
+                        <div class="button-area d-grid gap-2">
+                            <button type="submit" class="btn btn-light btn-lg" id="submitBtn" disabled>로그인</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="signup-wrapper">
+                    팬버스는 처음이세요?&nbsp;
+                    <a class="signup-button" href="/signup">회원가입</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('loginForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            function updateSubmitBtn() {
+                // 유효성 검사 결과 반영
+                submitBtn.disabled = !form.checkValidity();
+            }
+
+            // 입력 시 유효성 검사 실행
+            form.addEventListener('input', updateSubmitBtn);
+
+        })
+
+    </script>
+</section>
+</body>
+</html>

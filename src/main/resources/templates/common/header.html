@@ -1,8 +1,25 @@
-<!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      th:fragment="header">
-    <div style="border: solid 1px yellow">
-        <h1>Header</h1>
+<header xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+    <div class="header-container">
+        <div class="header-wrap">
+            <div class="header-left">
+            <span class="menu">
+                <button>
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+            </span>
+                <div class="logo">
+                    <h1>
+                        <a class="logo-text" href="">
+                            <span class="logo-font">Fanverse</span>
+                        </a>
+                    </h1>
+                </div>
+            </div>
+            <div class="header-right">
+                <button>
+                    <span class="material-symbols-outlined" style="font-size: 30px">chat</span>
+                </button>
+            </div>
+        </div>
     </div>
-</html>
+</header>
