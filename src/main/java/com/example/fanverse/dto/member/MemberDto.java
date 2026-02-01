@@ -1,4 +1,4 @@
-package com.example.fanverse.dto;
+package com.example.fanverse.dto.member;
 
 import com.example.fanverse.entity.Member;
 import com.example.fanverse.enums.Provider;
@@ -18,7 +18,6 @@ public class MemberDto {
 
   private Long id;
 
-  @NotBlank(message = "이름을 입력해주세요.")
   private String name;
 
   @NotBlank(message = "이메일을 입력해 주세요.")

@@ -18,26 +18,18 @@ public class SecurityConfig {
   @Bean
   SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter, JwtExceptionFilter jwtExceptionFilter) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
-            // jwt 인증 로직 추가
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .formLogin(AbstractHttpConfigurer::disable)
+        .logout(AbstractHttpConfigurer::disable)
+        // jwt 인증 로직 추가
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtExceptionFilter, jwtAuthenticationFilter.getClass())
-            .httpBasic(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests((authorize) -> authorize
-                    .requestMatchers("/signup", "/", "/login").permitAll()
-                .requestMatchers("/css/**", "/js/**").permitAll()
-                    .requestMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-            )
-            .formLogin(form -> form
-                    .loginPage("/loginform")
-                    .loginProcessingUrl("/login")
-                    .defaultSuccessUrl("/")
-                    .permitAll()
-            )
-            .logout((logout) -> logout
-                    .logoutUrl("/logout")
-                    .logoutSuccessUrl("/")
-            );
+        .authorizeHttpRequests((authorize) -> authorize
+            .requestMatchers("/signup", "/", "/login").permitAll()
+            .requestMatchers("/css/**", "/js/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .anyRequest().authenticated()
+        );
     return http.build();
   }
 

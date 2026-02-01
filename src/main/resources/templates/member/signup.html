@@ -103,6 +103,7 @@
                                             <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="name@example.com" required>
                                             <button type="button" class="btn btn-light">인증코드 받기</button>
                                         </div>
+                                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                                     </div>
                                 </div>
                                 <div class="pw-wrapper">

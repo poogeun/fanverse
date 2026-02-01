@@ -1,15 +1,18 @@
 package com.example.fanverse.controller;
 
-import com.example.fanverse.dto.MemberDto;
-import com.example.fanverse.entity.Member;
+import com.example.fanverse.dto.member.MemberDto;
 import com.example.fanverse.exception.member.DuplicateMemberException;
 import com.example.fanverse.service.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.time.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -25,8 +28,9 @@ public class MemberController {
   }
 
   @PostMapping("/signup")
-  public String signup(@Valid MemberDto memberDto, BindingResult bindingResult) {
-    try{
+  public String signup(@Valid @ModelAttribute("member") MemberDto memberDto,
+      BindingResult bindingResult) {
+    try {
       memberService.signUp(memberDto);
     } catch (DuplicateMemberException e) {
       bindingResult.rejectValue(
@@ -34,7 +38,7 @@ public class MemberController {
       );
     }
 
-    if(bindingResult.hasErrors()) {
+    if (bindingResult.hasErrors()) {
       return "member/signup";
     }
 
@@ -47,8 +51,34 @@ public class MemberController {
     return "member/login";
   }
 
-//  @PostMapping("/login")
-//  public String login(@Valid MemberDto memberDto) {
-//
-//  }
+  @PostMapping("/login")
+  public String login(@Valid MemberDto memberDto, HttpServletResponse res) {
+    var authDto = memberService.login(memberDto.getEmail(), memberDto.getPassword());
+
+    ResponseCookie cookie = ResponseCookie.from("access_token", authDto.getAccessToken())
+        .httpOnly(true)
+        .path("/")
+        .maxAge(Duration.ofMinutes(30))
+        .secure(false)
+        .sameSite("Lax")
+        .build();
+
+    res.addHeader("Set-Cookie", cookie.toString());
+
+    return "redirect:/";
+  }
+
+  @PostMapping("/logout")
+  public String logout(HttpServletResponse res) {
+    ResponseCookie cookie = ResponseCookie.from("access_token", "")
+        .path("/")
+        .maxAge(0)
+        .httpOnly(true)
+        .secure(false)
+        .sameSite("Lax")
+        .build();
+
+    res.addHeader("Set-Cookie", cookie.toString());
+    return "redirect:/";
+  }
 }

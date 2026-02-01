@@ -1,6 +1,7 @@
 package com.example.fanverse.service;
 
-import com.example.fanverse.dto.MemberDto;
+import com.example.fanverse.dto.member.MemberAuthenticationDto;
+import com.example.fanverse.dto.member.MemberDto;
 import com.example.fanverse.entity.Member;
 import com.example.fanverse.enums.Provider;
 import com.example.fanverse.enums.Role;
@@ -21,6 +22,19 @@ public class MemberService implements UserDetailsService {
   private MemberSqlMapper memberSqlMapper;
   @Autowired
   private PasswordEncoder passwordEncoder;
+  @Autowired
+  private JwtService jwtService;
+
+  @Override
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    var member = memberSqlMapper.findByEmail(email);
+
+    if (member == null) {
+      throw new MemberNotFoundException(email);
+    }
+
+    return member;
+  }
 
   public void signUp(MemberDto memberDto) {
     var existsMember = memberSqlMapper.findByEmail(memberDto.getEmail());
@@ -39,14 +53,17 @@ public class MemberService implements UserDetailsService {
     memberSqlMapper.insertMember(member);
   }
 
-  @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+  public MemberAuthenticationDto login(String email, String password) {
     var member = memberSqlMapper.findByEmail(email);
-
     if (member == null) {
       throw new MemberNotFoundException(email);
     }
 
-    return member;
+    if (passwordEncoder.matches(password, member.getPassword())) {
+      var accessToken = jwtService.generateAccessToken(member);
+      return new MemberAuthenticationDto(accessToken);
+    } else {
+      throw new MemberNotFoundException();
+    }
   }
 }
