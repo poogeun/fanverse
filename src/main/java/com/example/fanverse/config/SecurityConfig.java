@@ -25,8 +25,8 @@ public class SecurityConfig {
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(jwtExceptionFilter, jwtAuthenticationFilter.getClass())
         .authorizeHttpRequests((authorize) -> authorize
-            .requestMatchers("/signup", "/", "/login").permitAll()
-            .requestMatchers("/css/**", "/js/**").permitAll()
+            .requestMatchers("/signup", "/", "/login", "/concert", "/artist").permitAll()
+            .requestMatchers("/css/**", "/js/**", "/img/**", "/favicon.ico").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
         );

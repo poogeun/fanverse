@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.fanverse.mapper.ArtistSqlMapper">
+
+  <insert id="insertArtist"
+          useGeneratedKeys="true"
+          keyProperty="id">
+    INSERT INTO artist
+        (artist_name, artist_name_en, agency)
+    VALUES
+        (#{artistName},
+         #{artistNameEn},
+         #{agency})
+  </insert>
+
+  <select id="selectAllArtists"
+    parameterType="string"
+    resultType="com.example.fanverse.dto.ArtistDto">
+    SELECT * FROM artist
+    ORDER BY id DESC
+  </select>
+
+</mapper>

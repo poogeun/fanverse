@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layout}">
+<head>
+  <title>Fanverse</title>
+
+  <th:block layout:fragment="css">
+    <style>
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px 20px;
+      }
+      .concert-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .button-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      button.filter {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+      }
+      .filter-wrap {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+      }
+      .material-symbols-outlined {
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .contents-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        padding: 24px;
+      }
+      .concert-box {
+        background: #fff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 6px 28px rgba(0,0,0, .1);
+      }
+      .concert-box > strong {
+        display: block;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 16px;
+      }
+      .concert-list {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .concert-item {
+        border-radius: 12px;
+        overflow: hidden;
+        padding: 5px 0;
+      }
+      .concert-item a {
+        display: block;
+        text-decoration: none;
+        color: #000;
+      }
+      .concert-img {
+        display: block;
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 8px;
+      }
+      .concert-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .concert-title {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-bottom: 6px;
+        overflow: hidden;
+      }
+      .concert-day,
+      .concert-location {
+        display: block;
+        font-size: 12px;
+        color: #888;
+      }
+      .more-button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px 0;
+        border-radius: 999px;
+        border: 1px solid #e5e5e5;
+        background: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .more-button .button-text {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    </style>
+  </th:block>
+</head>
+
+<body>
+<section layout:fragment="content">
+  <div class="container">
+    <div class="concert-header">
+      <div class="button-wrap">
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#artistModal">아티스트 등록</button>
+        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#concertModal">콘서트 등록</button>
+      </div>
+      <button class="filter">
+        <div class="filter-wrap">
+          <div>필터</div>
+          <span class="material-symbols-outlined">page_info</span>
+        </div>
+      </button>
+    </div>
+
+    <div class="contents-wrap">
+      <div class="concert-box">
+        <strong>최신</strong>
+        <ul class="concert-list">
+          <li class="concert-item">
+            <a href="/">
+              <span class="concert-img">
+                <img th:src="@{/img/concert.png}" alt="concert">
+              </span>
+              <strong class="concert-title">
+                2026 NCT DREAM TOUR 〈THE DREAM SHOW 4 : FUTURE THE DREAM〉 FINALE
+              </strong>
+              <span class="concert-day">2026.03.20 - 2026.03.29</span>
+              <span class="concert-location">KSPO DOME</span>
+            </a>
+          </li>
+        </ul>
+        <button class="more-button">
+          <span class="button-text">더 보기</span>
+        </button>
+      </div>
+      <div class="concert-box">
+        <strong>추천</strong>
+        <ul class="concert-list">
+          <li class="concert-item">
+            <a href="/">
+              <span class="concert-img">
+                <img th:src="@{/img/concert.png}" alt="concert">
+              </span>
+              <strong class="concert-title">
+                2026 NCT DREAM TOUR 〈THE DREAM SHOW 4 : FUTURE THE DREAM〉 FINALE
+              </strong>
+              <span class="concert-day">2026.03.20 - 2026.03.29</span>
+              <span class="concert-location">KSPO DOME</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!--  아티스트 등록 모달-->
+  <div class="modal fade" id="artistModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4">
+
+        <div class="modal-header border-0">
+          <div>
+            <h5 class="modal-title fw-bold">아티스트 등록</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form th:action="@{/artist}" th:object="${artist}" method="post" id="artistForm">
+          <div class="modal-body pt-0">
+            <div class="mb-3">
+              <label for="artistName" class="form-label">아티스트명</label>
+              <input type="text" th:field="*{artistName}" class="form-control" id="artistName" name="artistName">
+              <div class="invalid-feedback" id="artistNameError"></div>
+            </div>
+            <div class="mb-3">
+              <label for="artistNameEn" class="form-label">아티스트명 (영문)</label>
+              <input type="text" th:field="*{artistNameEn}" class="form-control" id="artistNameEn" name="artistNameEn">
+              <div class="invalid-feedback" id="artistNameEnError"></div>
+            </div>
+            <div class="mb-3">
+              <label for="agency" class="form-label">회사명</label>
+              <input type="text" th:field="*{agency}" class="form-control" id="agency" name="agency">
+              <div class="invalid-feedback" id="agencyError"></div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0">
+            <button type="submit" id="artistSubmitBtn" class="btn btn-secondary rounded-pill px-4">
+              등록
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<!--  콘서트 등록 모달-->
+  <div class="modal fade" id="concertModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content rounded-4">
+
+        <div class="modal-header border-0">
+          <div>
+            <h5 class="modal-title fw-bold">콘서트 등록</h5>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <form th:action="@{/concert}" th:object="${concert}" method="post" id="concertForm" enctype="multipart/form-data">
+          <div class="modal-body pt-0">
+            <div class="mb-3">
+              <label for="artistName" class="form-label">아티스트</label>
+              <select id="artistSelect" class="selectpicker form-select" th:field="*{artistId}" name="artistId" data-live-search="true" data-width="100%" title="아티스트 선택">
+                <option th:each="artist : ${artistList}" th:value="${artist.id}" th:text="${artist.artistName}">
+                </option>
+              </select>
+              <div class="invalid-feedback" id="artistIdError"></div>
+            </div>
+            <div class="mb-3">
+              <label for="title" class="form-label">공연명</label>
+              <input type="text" th:field="*{title}" class="form-control" id="title" name="title">
+              <div class="invalid-feedback" id="titleError"></div>
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-6">
+                <label for="startAt" class="form-label">시작일</label>
+                <input type="date" th:field="*{startAt}" class="form-control" id="startAt" name="startAt">
+                <div class="invalid-feedback" id="startAtError"></div>
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="endAt" class="form-label">종료일</label>
+                <input type="date" th:field="*{endAt}" class="form-control" id="endAt" name="endAt">
+                <div class="invalid-feedback" id="endAtError"></div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="place" class="form-label">장소</label>
+              <input type="text" th:field="*{place}" class="form-control" id="place" name="place">
+              <div class="invalid-feedback" id="placeError"></div>
+            </div>
+            <div class="mb-3">
+              <label for="bookingUrl" class="form-label">예매 사이트</label>
+              <input type="text" th:field="*{bookingUrl}" class="form-control" id="bookingUrl" name="bookingUrl">
+            </div>
+            <div class="mb-3">
+              <label for="posterImg" class="form-label">포스터 등록</label>
+              <input type="file" th:field="*{posterImg}" class="form-control" id="posterImg" name="posterImg" accept="image/*">
+            </div>
+          </div>
+
+          <div class="modal-footer border-0">
+            <button type="submit" id="concertSubmitBtn" class="btn btn-secondary rounded-pill px-4">
+              등록
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+    // 아티스트등록
+    const artistModal = document.getElementById('artistModal');
+    const artistForm = document.getElementById('artistForm');
+
+    artistForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // 기존 에러 초기화
+      artistForm.querySelectorAll('.is-invalid').forEach(input => {
+        input.classList.remove('is-invalid');
+        const feedback = input.parentElement.querySelector('.invalid-feedback');
+        if(feedback) feedback.textContent = '';
+      });
+
+      // payload 생성
+      const payload = Object.fromEntries(new FormData(artistForm));
+      console.log('payload: ', payload);
+
+      // 서버 요청
+      const res = await fetch('/artist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+
+      // 검증 실패면
+      if (!res.ok) {
+        const body = await res.json();
+        const fieldErrors = body.errors || {};
+
+        Object.entries(fieldErrors).forEach(([field, message]) => {
+          const input = artistForm.querySelector(`[name="${field}"]`);
+          if (!input) return;
+
+          input.classList.add('is-invalid');
+          const feedback = input.parentElement.querySelector('.invalid-feedback');
+          if (feedback) feedback.textContent = message;
+        });
+
+        return;
+      }
+
+      // 성공 -> 모달 닫기
+      const modal = bootstrap.Modal.getInstance(
+          document.getElementById('artistModal')
+      );
+      modal.hide();
+
+    });
+
+    function resetArtistForm() {
+      artistForm.reset();
+
+      artistForm.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+      artistForm.querySelectorAll('[id$="Error"]').forEach(el => el.textContent = '');
+    }
+
+    artistModal.addEventListener('hidden.bs.modal', resetArtistForm);
+
+
+    //   콘서트 등록
+    $('#concertModal').on('shown.bs.modal', function () {
+      $('#artistSelect').selectpicker('refresh');
+    });
+
+    const concertModal = document.getElementById('concertModal');
+    const concertForm = document.getElementById('concertForm');
+
+    concertForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // 기존 에러 초기화
+      concertForm.querySelectorAll('.is-invalid').forEach(input => {
+        input.classList.remove('is-invalid');
+        const feedback = input.parentElement.querySelector('.invalid-feedback');
+        if (feedback) feedback.textContent = '';
+      });
+
+      const fd = new FormData(concertForm);
+
+      const res = await fetch('/concert', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: fd
+      });
+
+      // 검증 실패면
+      if (!res.ok) {
+        const body = await res.json();
+        const fieldErrors = body.errors || {};
+
+        Object.entries(fieldErrors).forEach(([field, message]) => {
+          const input = concertForm.querySelector(`[name="${field}"]`);
+          if (!input) return;
+
+          input.classList.add('is-invalid');
+
+          const feedback = document.getElementById(field + "Error");
+          if (feedback) feedback.textContent = message;
+        });
+
+        return;
+      }
+
+      // 성공 -> 모달 닫기
+      const modal = bootstrap.Modal.getInstance(
+          document.getElementById('concertModal')
+      );
+      modal.hide();
+    })
+
+    function resetConcertForm() {
+      concertForm.reset();
+
+      concertForm.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+      concertForm.querySelectorAll('[id$="Error"]').forEach(el => el.textContent = '');
+
+      const artistSelect = document.getElementById('artistSelect');
+      artistSelect?.closest('.bootstrap-select')?.classList.remove('is-invalid');
+      if (window.jQuery) {
+        $('#artistSelect').selectpicker('val', '');
+        $('#artistSelect').selectpicker('refresh');
+      }
+    }
+
+    concertModal.addEventListener('hidden.bs.modal', resetConcertForm);
+  </script>
+</th:block>
+</body>
+</html>
